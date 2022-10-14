@@ -1,40 +1,64 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { Button, Input } from "@mantine/core";
+
+import useAuth from "../lib/hooks/useAuth";
+import Person from "../components/Person";
+import Locked from "../components/Locked";
 
 const Login = () => {
-  const useAuth = () => {
-    const login = true;
-    const error = {
-      message: "error",
-    };
-
-    return { login, error };
-  };
-
-  const { login, error } = useAuth();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { loading, login, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // login({ email, password });
+    login(username, password);
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+    <div className="bg-white w-full sm:w-1/2 sm:mx-auto p-8 md:p-10">
+      <form
+        className="flex flex-col w-2/3 sm:w-2/6 mx-auto gap-2 "
+        onSubmit={handleSubmit}
+      >
+        <Input
+          size="xs"
+          icon={<Person width={16} fill="#8a8888" />}
+          variant="unstyled"
+          sx={{ border: "1px solid #8a8888", borderRadius: "4px" }}
+          placeholder="Username"
+          value={username}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setUsername(e.target.value)
+          }
         />
-        <input
+        <Input
+          variant="unstyled"
+          size="xs"
+          icon={<Locked width={12} fill="#8a8888" />}
           type="password"
+          sx={{ border: "1px solid #8a8888", borderRadius: "4px" }}
+          placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
         />
-        <button type="submit">Login</button>
+        <Button
+          loading={loading}
+          size="xs"
+          className="w-1/2 mx-auto"
+          leftIcon=""
+          color="dark"
+          variant="outline"
+          type="submit"
+        >
+          Login
+        </Button>
       </form>
-      {error && <p>{error.message}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-red-500 font-semibold">{error}</p>
+      )}
     </div>
   );
 };
