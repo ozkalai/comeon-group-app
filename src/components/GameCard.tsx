@@ -1,8 +1,22 @@
-import { Divider, Button } from "@mantine/core";
+import { useState } from "react";
+import { Divider, Button, Modal } from "@mantine/core";
+
 import { Game } from "../interfaces";
 import LeftArrow from "./icons/LeftArrow";
+import getGameFrameUrl from "../lib/helper/getGameFrameUrl";
 
 const GameCard = ({ game }: { game: Game }) => {
+  const [opened, setOpened] = useState(false);
+  const [frameUrl, setFrameUrl] = useState("");
+
+  const handleOpen = () => {
+    setOpened(true);
+    const url = getGameFrameUrl(
+      game.name.toLocaleLowerCase().replaceAll(" ", "")
+    );
+    setFrameUrl(url as string | "");
+  };
+
   return (
     <>
       <div className="flex  gap-4 py-2">
@@ -17,7 +31,9 @@ const GameCard = ({ game }: { game: Game }) => {
               rightIcon={
                 <LeftArrow className="rotate-180" width={10} color="white" />
               }
-              onClick={() => {}}
+              onClick={() => {
+                handleOpen();
+              }}
             >
               Play
             </Button>
@@ -25,6 +41,20 @@ const GameCard = ({ game }: { game: Game }) => {
         </div>
       </div>
       <Divider />
+      <Modal
+        size="calc(100vw - 100px)"
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title={game.name}
+      >
+        <div className="h-[800px]">
+          <iframe
+            title={game.name}
+            src={frameUrl}
+            className="w-full h-full"
+          ></iframe>
+        </div>
+      </Modal>
     </>
   );
 };
