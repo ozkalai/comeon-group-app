@@ -1,16 +1,30 @@
 import { Button, Input, Divider, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
 
 import LeftArrow from "../components/icons/LeftArrow";
+import Search from "../components/icons/Search";
 import { Category, Game } from "../interfaces";
 import useAuth from "../lib/hooks/useAuth";
 
 const Casino = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [games, setGames] = useState<Game[]>([]);
+  const [filteredGames, setFilteredGames] = useState<Game[]>([]);
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    setFilteredGames(
+      games.filter((game) =>
+        game.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, games]);
 
   useEffect(() => {
     fetch("http://localhost:3001/categories", { method: "get" })
@@ -51,9 +65,20 @@ const Casino = () => {
             Logout
           </Button>
         </div>
-        <Input />
+        <div>
+          <Input
+            rightSection={
+              <div>
+                <Search width={20} fill="gray" />
+              </div>
+            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSearch(e.target.value)
+            }
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-8 mt-6 gap-4">
+      <div className="grid grid-cols-8 mt-6 gap-8">
         <div className="col-span-8 md:col-span-6">
           <div>
             <Text size={20} weight={600}>
@@ -61,8 +86,8 @@ const Casino = () => {
             </Text>
             <Divider className="mt-1 mb-4" />
             <div className="flex flex-col gap-4">
-              {games.map((game) => (
-                <GameCard game={game} />
+              {filteredGames.map((game) => (
+                <GameCard key={game.code} game={game} />
               ))}
             </div>
           </div>
@@ -75,7 +100,17 @@ const Casino = () => {
             <Divider className="mt-1" />
             <div className="mt-4 py-2">
               {categories.map((category) => (
-                <div key={category.id} onClick={() => {}}>
+                <div
+                  key={category.id}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setFilteredGames(
+                      games.filter((game) =>
+                        game.categoryIds.includes(category.id)
+                      )
+                    );
+                  }}
+                >
                   <span className="cursor-pointer text-md font-semibold">
                     {category.name}
                   </span>
