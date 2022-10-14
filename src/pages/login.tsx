@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button, Input } from "@mantine/core";
 
 import useAuth from "../lib/hooks/useAuth";
-import Person from "../components/Person";
-import Locked from "../components/Locked";
+import Person from "../components/icons/Person";
+import Locked from "../components/icons/Locked";
 
 const Login = () => {
   const [username, setUsername] = useState("");
