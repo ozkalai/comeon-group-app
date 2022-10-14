@@ -18,7 +18,7 @@ const Login = () => {
   return (
     <div className="bg-white w-full sm:w-1/2 sm:mx-auto p-8 md:p-10">
       <form
-        className="flex flex-col w-2/3 sm:w-2/6 mx-auto gap-2 "
+        className="flex flex-col w-2/3 sm:w-2/6 mx-auto gap-5"
         onSubmit={handleSubmit}
       >
         <Input
@@ -57,7 +57,9 @@ const Login = () => {
         </Button>
       </form>
       {error && (
-        <p className="mt-2 text-sm text-red-500 font-semibold">{error}</p>
+        <p className="mt-4 text-sm text-red-500 text-center font-semibold">
+          {error}
+        </p>
       )}
     </div>
   );
