@@ -43,7 +43,7 @@ const Casino = () => {
 
   return (
     <div className="bg-white container mx-auto flex flex-col p-5">
-      <div className="flex justify-between">
+      <div className="flex flex-col md:flex-row gap-4 justify-between">
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
             <img

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Divider, Button, Modal } from "@mantine/core";
 
 import { Game } from "../interfaces";
@@ -19,9 +19,13 @@ const GameCard = ({ game }: { game: Game }) => {
 
   return (
     <>
-      <div className="flex  gap-4 py-2">
-        <img src={game.icon} alt="logo" className="w-40 h-40" />
-        <div>
+      <div className="flex flex-col md:flex-row gap-4 py-2">
+        <img
+          src={game.icon}
+          alt="logo"
+          className="mb-4 w-full sm:w-40 sm:h-40"
+        />
+        <div className="flex flex-col gap-4">
           <h1 className="text-start text-xl font-semibold">{game.name}</h1>
           <p className="text-sm text-gray-500">{game.description}</p>
           <div className="flex justify-end items-center">
@@ -42,12 +46,12 @@ const GameCard = ({ game }: { game: Game }) => {
       </div>
       <Divider />
       <Modal
-        size="calc(100vw - 100px)"
+        size="100vw"
         opened={opened}
         onClose={() => setOpened(false)}
         title={game.name}
       >
-        <div className="h-[800px]">
+        <div className="h-[400px] md:h-[800px]">
           <iframe
             title={game.name}
             src={frameUrl}
