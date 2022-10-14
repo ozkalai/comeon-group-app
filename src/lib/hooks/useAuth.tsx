@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   name: string;
@@ -30,6 +31,8 @@ export function AuthProvider({
   const [user, setUser] = useState<User>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   function login(username: string, password: string) {
     setLoading(true);
@@ -58,6 +61,7 @@ export function AuthProvider({
               event,
             });
             setError("");
+            navigate("/");
           });
         }
       })
@@ -70,6 +74,7 @@ export function AuthProvider({
     setLoading(true);
     setUser(undefined);
     setLoading(false);
+    navigate("/login");
   }
 
   const memoedValue = useMemo(
