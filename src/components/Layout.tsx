@@ -1,4 +1,4 @@
-import logo from "images/logo.svg";
+import { Outlet } from "react-router";
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
@@ -9,6 +9,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         alt="logo"
       />
       {children}
+      <Outlet />
     </div>
   );
 };
